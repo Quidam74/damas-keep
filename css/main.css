@@ -1,0 +1,88 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.list {
+    display: flex;
+}
+
+.sous-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.list-elem {
+    width: 176px;
+    background-color: red;
+    padding: 10px;
+    margin: 12px;
+
+}
+
+.new {
+    position: fixed;
+    bottom: 30px;
+    left: 12px;
+}
+
+.new-form {
+    display: flex;
+}
+
+.new-input {
+    height: 60px;
+    width: 196px;
+}
+
+.new-button {
+    margin: auto;
+    margin-left: 30px;
+    text-align: center;
+    font-size: 50px;
+    width: 60px;
+    background-color: red;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    transition: opacity .2s ease-in-out;
+}
+
+.new-button:hover {
+    opacity: 0.5;
+
+}
+
+.hide {
+    display: none;
+}
+
+.PopUp-bg {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: black;
+    opacity: 0.3;
+    width: 100vw;
+    height: 100vh;
+
+}
+
+.PopUp-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.PopUp-content {
+
+
+}
+
+.PopUp-text {
+    width: 500px;
+    height: 500px;
+    padding: 30px;
+
+}
