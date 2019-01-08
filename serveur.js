@@ -1,7 +1,7 @@
 var express = require("express");
 
 var app = express();
-
+var ObjectID = require('mongodb').ObjectID;
 var MongoClient = require("mongodb").MongoClient;
 var axios = require("axios")
 var db;
@@ -24,9 +24,6 @@ app.use("/js", express.static(__dirname + "/js"));
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/index.html");
 });
-app.get("/sloubi", function (req, res) {
-    res.end("<body><p style=\"background-color:red\"> lol ! </p>");
-});
 
 
 app.get("/note/readAll", (req, res) => {
@@ -34,9 +31,9 @@ app.get("/note/readAll", (req, res) => {
         res.json({"note": note});
     })
 });
+
 app.post("/note/create/:value", (req, res) => {
     var json = [{"Text": req.params.value}];
-    console.log(json)
     db.collection("note").insertMany(json, function (err, res) {
         if (err) throw err;
         console.log("Number of documents inserted: " + res.insertedCount);
@@ -44,15 +41,17 @@ app.post("/note/create/:value", (req, res) => {
     });
 });
 app.get("/note/update/:id/:value", (req, res) => {
-    var query ={"_id": req.params.id};
-    var value =  {$set: {Text: req.params.value}};
+    var query = {"_id": ObjectID(req.params.id)};
+    var value = {$set: {Text: req.params.value}};
     db.collection("note").updateOne(query, value, function (err, messages) {
 
     })
 });
-app.get("/note/delet", (req, res) => {
-    db.collection("note").find().toArray(function (err, messages) {
-        res.json({message: messages});
+app.get("/note/delet/:id/", (req, res) => {
+    var query = {"_id": ObjectID(req.params.id)};
+    console.log("aaezae");
+    db.collection("note").deleteOne(query, function (err, messages) {
+console.log(err)
     })
 });
 

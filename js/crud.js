@@ -6,12 +6,12 @@ function create(chaine) {
 }
 
 function readAll() {
-    new Promise ((resolve,reject) =>{
-    $.get("/note/readAll", function (data) {
-         resolve(data);
+    new Promise((resolve, reject) => {
+        $.get("/note/readAll", function (data) {
+            resolve(data);
 
-    }, "json");
-    }).then(function(result){
+        }, "json");
+    }).then(function (result) {
         listDesTruc = result;
         insertNumberRow();
         repartirPenseBete();
@@ -21,12 +21,32 @@ function readAll() {
 }
 
 function update(chaine, id) {
-    $.get("/note/update/"+id+"/"+chaine, function (data) {
-        resolve(data);
-
-    }, "json");
+    if (chaine.length != 0) {
+        $.get("/note/update/" + id + "/" + chaine, function (data) {
+        }, "json");
+    } else {
+        delet(id)
+    }
 }
 
 function delet(id) {
+    $.get("/note/delet/" + id + "/", function (data) {
+    }, "json");
+}
+
+function initBase() {
+  setInterval(function () {
+      if(u<80){
+          var chaine = listeDesTrucPossible[parseInt(Math.random() * 4)]
+
+          $.post("/note/create/" + chaine.Text, function (data) {
+              console.log(data)
+          }, "json");
+          u++
+      }
+
+  },50)
+
+
 
 }
