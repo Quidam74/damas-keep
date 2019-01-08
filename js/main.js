@@ -2,16 +2,15 @@ var listeDesTrucPossible = [{"Text": "Munch on tasand stare hopped up on catnip,
     {"Text": "Hunt by meowing loudly at 5am next to human slave food dispensert was chasing the moupurr purr yawn and chew the plant so meow meow mama chew foot."},
     {"Text": "My cat stared at me he was sipping his tea"},
     {"Text": "Catch mouse and gave it as a present stare at the wall, play with food and get confused by dust so no, you can't close the door"}]
-var listDesTruc = [{"Text": "aaa"}, {"Text": "aaa"}];
-for (var u = 0; u < 80; u++) {
-    listDesTruc[u] = listeDesTrucPossible[parseInt(Math.random() * 4)]
+var listDesTruc =//[{"Text": "aaa"}, {"Text": "aaa"}];
+    /*for (var u = 0; u < 80; u++) {
+    listDesTruc.note[u] = listeDesTrucPossible[parseInt(Math.random() * 4)]
 
-}
-document.addEventListener("DOMContentLoaded", () => {
-    insertNumberRow();
-    repartirPenseBete();
-    bindevent();
-});
+    }*/
+    document.addEventListener("DOMContentLoaded", () => {
+        readAll();
+
+    });
 
 var taileMaxChaine = 300;
 
@@ -37,14 +36,15 @@ function repartirPenseBete() {
     var heightCol = 0;
     for (var u = 0; u <= lesCol.length - 1; u++) {
         heightCol = getInnerHeight(lesCol[u]);
-        while (window.innerHeight - 300 > heightCol && i < listDesTruc.length - 1) {
-            var tailleChaine = listDesTruc[i].Text.length
+        while (window.innerHeight - 300 > heightCol && i < listDesTruc.note.length) {
+            var tailleChaine = listDesTruc.note[i].Text.length
             if (tailleChaine >= taileMaxChaine)
-                lesCol[u].innerHTML += "<div data-nombre=" + i + " class=\"list-elem tiny-elem\"><p>" + listDesTruc[i].Text.substr(0, taileMaxChaine) + " ..." + "</p></div>"
+                lesCol[u].innerHTML += "<div data-mongoid='"+listDesTruc.note[i]._id+"' data-nombre=" + i + " class=\"list-elem tiny-elem\"><p>" + listDesTruc.note[i].Text.substr(0, taileMaxChaine) + " ..." + "</p></div>"
             else {
-                lesCol[u].innerHTML += "<div data-nombre=" + i + " class=\"list-elem\"><p>" + listDesTruc[i].Text + "</p></div>"
+                lesCol[u].innerHTML += "<div data-mongoid='"+listDesTruc.note[i]._id+"' data-nombre=" + i + " class=\"list-elem\"><p>" + listDesTruc.note[i].Text + "</p></div>"
             }
-            heightCol = getInnerHeight(lesCol[u]) + estimeHeight(listDesTruc[i + 1].Text);
+            if (i !== listDesTruc.note.length - 1)
+                heightCol = getInnerHeight(lesCol[u]) + estimeHeight(listDesTruc.note[i + 1].Text);
             i++
         }
     }
@@ -85,21 +85,22 @@ function bindClickValidForm() {
     document.querySelector(".new-button").addEventListener("click", () => {
         var text = document.querySelector(".new-input").value
         if (text.length > 0) {
-            console.log(document.querySelector(".new-input").value)
+            create(document.querySelector(".new-input").value)
         }
     })
 }
 
 function bindClickEdit() {
-var popUpText =  document.querySelector(".PopUp-text")
-    var popUp =  document.querySelector(".PopUp")
+    var popUpText = document.querySelector(".PopUp-text")
+    var popUp = document.querySelector(".PopUp")
     var notes = document.querySelectorAll(".list-elem");
-    notes.forEach((elem,index) => {
+    notes.forEach((elem, index) => {
         elem.addEventListener("click", (e) => {
             var idDemander = e.currentTarget.dataset.nombre;
-            popUpText.innerHTML = listDesTruc[idDemander].Text;
+            popUpText.innerHTML = listDesTruc.note[idDemander].Text;
             popUp.classList.remove("hide");
             popUp.dataset.nombre = idDemander
+            popUp.dataset.mongoid = e.currentTarget.dataset.mongoid
         })
 
     })
@@ -109,12 +110,13 @@ var popUpText =  document.querySelector(".PopUp-text")
 
 function bindPopUp() {
 
-    var popUpText =  document.querySelector(".PopUp-text")
-    var popUp =  document.querySelector(".PopUp")
+    var popUpText = document.querySelector(".PopUp-text")
+    var popUp = document.querySelector(".PopUp")
     document.querySelector(".PopUp-bg").addEventListener("click", () => {
         var newText = popUpText.value;
-        update(newText, popUp.dataset.nombre);
+        update(newText, popUp.dataset.mongoid);
         popUp.dataset.nombre = ""
+        popUp.dataset.mongoid = ""
         popUpText.innerHTML = "";
         popUp.classList.add("hide");
     })
